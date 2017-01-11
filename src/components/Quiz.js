@@ -8,8 +8,7 @@ export default class Quiz extends Component {
     this.state = {
       quizzes: '',
       selectedAnswers: [null, null, null, null],
-      totalScore: 0,
-      score: 0
+      totalScore: 0
     };
   }
 
@@ -42,20 +41,17 @@ export default class Quiz extends Component {
     });
   }
 
-  setScores(score) {
-    // let selectedAnswers = this.state.selectedAnswers;
-    // selectedAnswers[index] = score;
-    // console.log(index)
-    // this.setState({ selectedAnswers: selectedAnswers });
-    let newScore = this.state.score + score;
-    this.setState({score: newScore})
+  setScores(index, score) {
+    let selectedAnswers = this.state.selectedAnswers;
+    selectedAnswers[index] = score;
+    this.setState({ selectedAnswers: selectedAnswers });
   }
 
-  addScores(score) {
-    // let array = this.state.selectedAnswers
-    // let sum = array.reduce((a, b) => a + b, 0)
-    // console.log(sum)
-    // this.setState({totalScore: sum})
+  addScores() {
+    let array = this.state.selectedAnswers
+    let sum = array.reduce((a, b) => a + b, 0)
+    console.log(sum)
+    this.setState({totalScore: sum})
     this.postScore()
   }
 
@@ -76,7 +72,8 @@ export default class Quiz extends Component {
                 id={index}
                 title={question.title}
                 answers={question.answers}
-                setScores={(score) => this.setScores(score)}
+                setScores={this.setScores.bind(this)}
+                checked={this.state.checked}
               /> )}
           </section>
           <button className="submit-btn" onClick={() => this.addScores().bind(this)}>
@@ -86,7 +83,7 @@ export default class Quiz extends Component {
           Reset
           </button>
           <div>
-          Current Score: {this.state.score}
+          Current Score: {this.state.totalScore}
           </div>
         </div>
       : <h1>No Quizzes</h1>

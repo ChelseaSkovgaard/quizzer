@@ -12,7 +12,7 @@ export default class Question extends Component {
             index={this.props.id}
             title={answer.title}
             score={answer.score}
-            setScores={(score) => this.props.setScores(score)}
+            setScores={this.props.setScores}
           />)}
       </section>
     )
