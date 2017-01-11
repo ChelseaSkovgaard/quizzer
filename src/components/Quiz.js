@@ -30,18 +30,20 @@ export default class Quiz extends Component {
     return (
       this.state.quizzes ?
         <div>
-          <h1 className="pageTitle">{this.state.quizzes[0].title}</h1>
+          <h1>{this.state.quizzes[0].title}</h1>
           <section>
             {this.state.quizzes[0].questions.map((question, index) =>
               <Question
-                className="questionContainer"
+                className="question-container"
                 key={question.id}
                 id={index}
                 title={question.title}
                 answers={question.answers}
               /> )}
           </section>
-
+          <button className="submit-btn">
+          Submit
+          </button>
         </div>
       : <h1>No Quizzes</h1>
     );
