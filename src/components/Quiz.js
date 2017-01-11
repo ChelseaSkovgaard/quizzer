@@ -6,7 +6,9 @@ export default class Quiz extends Component {
   constructor() {
     super();
     this.state = {
-      quizzes: ''
+      quizzes: '',
+      selectedAnswers: {},
+      scoreMessage: ''
     };
   }
 
@@ -19,14 +21,36 @@ export default class Quiz extends Component {
       .then((response) => {
         this.setState({
           quizzes: response.data.quizzes,
+        }, () => {
+          let selectedAnswers = this.state.selectedAnswers
+          response.data.quizzes[0].questions.forEach((question) => {
+            selectedAnswers[question.id] = 0
+          })
+          this.setState({selectedAnswers: selectedAnswers })
         });
       })
       .catch((error) => {
         console.log(error);
     });
   }
-
+  postScore(total) {
+    axios.post('/scores', {
+      'score': total
+    }).then((response) => {
+      console.log(response)
+      this.setState({scoreMessage: response.data.score})
+    })
+  }
+  setScores(id, score) {
+    let selectedAnswers = this.state.selectedAnswers
+    selectedAnswers[id] = score
+    this.setState({selectedAnswers: selectedAnswers})
+  }
   render() {
+    let selectedAnswers = this.state.selectedAnswers
+    let totalScore = Object.keys(selectedAnswers).reduce((sum, id) => {
+      return sum + selectedAnswers[id]
+    }, 0)
     return (
       this.state.quizzes ?
         <div>
@@ -36,14 +60,18 @@ export default class Quiz extends Component {
               <Question
                 className="question-container"
                 key={question.id}
-                id={index}
+                id={question.id}
                 title={question.title}
                 answers={question.answers}
+                setScores={this.setScores.bind(this)}
               /> )}
           </section>
-          <button className="submit-btn">
+          <button className="submit-btn" onClick={() => this.postScore(totalScore)}>
           Submit
           </button>
+          <div>
+          {totalScore} {this.state.scoreMessage}
+          </div>
         </div>
       : <h1>No Quizzes</h1>
     );

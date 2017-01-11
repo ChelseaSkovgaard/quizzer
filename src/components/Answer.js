@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 export default class Answer extends Component {
   render() {
+    let {id, score, setScores, title} = this.props
+
     return (
-      <article className="quizOptions">
+      <article className="quizOptions" onClick={() => setScores(id, score)}>
         <label>
-          <input type="radio" name={this.props.index}/>
-          {this.props.title}
+          <input type="radio" name={id}/>
+          {title}
         </label>
       </article>
     )
