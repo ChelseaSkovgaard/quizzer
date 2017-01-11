@@ -5,7 +5,7 @@ export default class Answer extends Component {
     return (
       <article className="quizOptions">
         <label>
-          <input type="radio" />
+          <input type="radio" name={this.props.index}/>
           {this.props.title}
         </label>
       </article>
