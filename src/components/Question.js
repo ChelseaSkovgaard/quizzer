@@ -9,8 +9,10 @@ export default class Question extends Component {
           {this.props.answers.map((answer, index) =>
           <Answer
             key={index}
+            index={this.props.id}
             title={answer.title}
             score={answer.score}
+            setScores={(score) => this.props.setScores(score)}
           />)}
       </section>
     )
